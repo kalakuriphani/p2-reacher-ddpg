@@ -84,7 +84,7 @@ def train(agent,env,n_episodes=2000,max_t=1000):
             break
     # Save models weights and scores
     torch.save(agent.actor_target.state_dict(),'checkpoint_actor.pth')
-    torch.save(agent.criti_target.state_dict(), 'checkpoint_critic.pth')
+    torch.save(agent.critic_target.state_dict(), 'checkpoint_critic.pth')
     np.savez('scores.npz',scores)
 
 def setup(env):
