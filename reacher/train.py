@@ -4,8 +4,6 @@ from reacher.noise import GuassianNoise
 
 import numpy as np
 import torch
-from unityagents import UnityEnvironment
-#from ddpg_agent import Agent
 
 
 def make_plot(show=False):
