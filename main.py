@@ -1,4 +1,4 @@
-from reacher.train import make_plot,setup,train
+from reacher.train import make_plot,setup,train,make_plot_learning
 import os
 from unityagents import UnityEnvironment
 
@@ -16,3 +16,4 @@ if __name__ == "__main__":
 
     print('Make training plot')
     make_plot()
+    make_plot_learning()

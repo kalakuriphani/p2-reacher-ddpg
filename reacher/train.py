@@ -1,7 +1,7 @@
 from collections import deque
-from reacher.ddpg_agent import Agent, TD3Agent
+from reacher.ddpg_agent import Agent
 from reacher.noise import GuassianNoise
-
+import matplotlib.pyplot as plt
 import numpy as np
 import torch
 
@@ -12,7 +12,7 @@ def make_plot(show=False):
         show (bool):  If True, show the image.  If False, save the image.
     """
 
-    import matplotlib.pyplot as plt
+
 
     # Load the previous scores and calculated running mean of 100 runs
     # ---------------------------------------------------------------------------------------
@@ -40,9 +40,22 @@ def make_plot(show=False):
     if show:
         plt.show()
     else:
-        plt.savefig('scores.png', dpi=200)
+        plt.savefig('scores1.png', dpi=200)
     plt.close()
 
+def make_plot_learning(show=False):
+    with np.load('scores.npz') as data:
+        scores = data['arr_0']
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    plt.plot(np.arange(len(scores)), scores)
+    plt.ylabel('Average Score')
+    plt.xlabel('Episode #')
+    if show:
+        plt.show()
+    else:
+        plt.savefig('learning.png', dpi=200)
+    plt.close()
 
 def train(agent,env,n_episodes=2000,max_t=1000):
     """
@@ -73,7 +86,6 @@ def train(agent,env,n_episodes=2000,max_t=1000):
             #      noise = gnoise.sample(action,policy_noise=expl_noise)
             #      action = (action + noise).clip(-1, 1)
 
-
             brain_info = env.step(action)[brain_name]
             next_state = brain_info.vector_observations[0]
             reward = brain_info.rewards[0]
@@ -94,9 +106,9 @@ def train(agent,env,n_episodes=2000,max_t=1000):
                                                                                          np.mean(scores_window)))
             break
     # Save models weights and scores
-    torch.save(agent.actor_target.state_dict(),'td3_checkpoint_actor.pth')
-    torch.save(agent.critic_target.state_dict(), 'td3_checkpoint_critic.pth')
-    np.savez('td3_scores.npz',scores)
+    torch.save(agent.actor_target.state_dict(),'checkpoint_actor.pth')
+    torch.save(agent.critic_target.state_dict(), 'checkpoint_critic.pth')
+    np.savez('scores.npz',scores)
 
 def setup(env):
     """Setups up the environment to train.
@@ -116,9 +128,5 @@ def setup(env):
     # -----------------------------------------------------------------------------------
     print('Setting up the agent.')
     return Agent(state_dim=state_size, action_dim=action_size, seed=42)
-
-
-
-
 
 
