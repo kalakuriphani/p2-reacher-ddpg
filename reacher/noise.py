@@ -1,6 +1,9 @@
 import copy
 import random
 import numpy as np
+import torch
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class OUNoise(object):
     """
@@ -29,3 +32,27 @@ class OUNoise(object):
         dx = self.theta * (self.mu -x) + self.sigma * np.array([random.random() for _ in range(len(x))])
         self.state = x + dx
         return self.state
+
+
+class GuassianNoise(object):
+
+    def __init__(self,noise_clip,size,low,high):
+        """
+        Returns Guassian Noise
+        :param noise:
+        :param size:
+        :param low:
+        :param high:
+        """
+
+        self.noise_clip = noise_clip
+        self.size = size
+        self.low = low
+        self.high = high
+
+    def sample(self,batch_actions,policy_noise):
+        noise = torch.Tensor(batch_actions).data.normal_(0,policy_noise).to(device)
+        noise = noise.clamp(-self.noise_clip,self.noise_clip)
+        return noise.detach().cpu().numpy()
+
+

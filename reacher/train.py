@@ -1,5 +1,7 @@
 from collections import deque
-from reacher.ddpg_agent import Agent
+from reacher.ddpg_agent import Agent, TD3Agent
+from reacher.noise import GuassianNoise
+
 import numpy as np
 import torch
 from unityagents import UnityEnvironment
@@ -58,19 +60,30 @@ def train(agent,env,n_episodes=2000,max_t=1000):
     scores = list()
     scores_window = deque(maxlen=100)
     brain_name = env.brain_names[0]
+    total_timesteps =0
+    expl_noise = 0.1
+    brain = env.brains[brain_name]
+    action_size = brain.vector_action_space_size
+    gnoise = GuassianNoise(size=action_size,noise_clip=0.5,low=-1,high=1)
     for i_episode in range(1,n_episodes+1):
         brain_info = env.reset(train_mode=True)[brain_name]
         state = brain_info.vector_observations[0]
         score = 0
         for t in range(max_t):
-            action = agent.act(state)
+            action = agent.act(state,total_timesteps)
+            # if expl_noise != 0:
+            #      noise = gnoise.sample(action,policy_noise=expl_noise)
+            #      action = (action + noise).clip(-1, 1)
+
+
             brain_info = env.step(action)[brain_name]
             next_state = brain_info.vector_observations[0]
             reward = brain_info.rewards[0]
             done = brain_info.local_done[0]
-            agent.step(state,action,reward,next_state,done)
+            agent.step(state,action,reward,next_state,done,t)
             state = next_state
             score += reward
+            total_timesteps+=1
             if done:
                 break
         scores_window.append(score) # Save most recent score
@@ -83,9 +96,9 @@ def train(agent,env,n_episodes=2000,max_t=1000):
                                                                                          np.mean(scores_window)))
             break
     # Save models weights and scores
-    torch.save(agent.actor_target.state_dict(),'checkpoint_actor.pth')
-    torch.save(agent.critic_target.state_dict(), 'checkpoint_critic.pth')
-    np.savez('scores.npz',scores)
+    torch.save(agent.actor_target.state_dict(),'td3_checkpoint_actor.pth')
+    torch.save(agent.critic_target.state_dict(), 'td3_checkpoint_critic.pth')
+    np.savez('td3_scores.npz',scores)
 
 def setup(env):
     """Setups up the environment to train.

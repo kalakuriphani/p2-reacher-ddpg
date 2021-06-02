@@ -3,8 +3,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-FC1_UNITS = 256
-FC2_UNITS = 128
+FC1_UNITS = 400
+FC2_UNITS = 300
 
 class Actor(nn.Module):
     """

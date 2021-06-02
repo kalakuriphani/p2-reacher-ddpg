@@ -6,7 +6,7 @@ from unityagents import UnityEnvironment
 env = UnityEnvironment('Reacher.app')
 
 if __name__ == "__main__":
-    for name in ['score.png','scores.npz','checkpoint.pth']:
+    for name in ['score.png','ddpg_scores.npz','checkpoint.pth']:
         if os.path.isfile(name):
             os.remove(name)
 
