@@ -135,6 +135,14 @@ class Agent(object):
         for target_param, local_param in zip(target_model.parameters(),local_model.parameters()):
             target_param.data.copy_(tau * local_param.data + (1.0 - tau) * target_param.data)
 
+    def save(self, filename, directory):
+        torch.save(self.actor.state_dict(), '%s/%s_actor.pth' % (directory, filename))
+        torch.save(self.critic.state_dict(), '%s/%s_critic.pth' % (directory, filename))
 
+        # To load pre-trained model
+
+    def load(self, filename, directory):
+        self.actor_local.load_state_dict(torch.load('%s/%s_actor.pth' % (directory, filename)))
+        self.critic_local.load_state_dict(torch.load('%s/%s_critic.pth' % (directory, filename)))
 
 

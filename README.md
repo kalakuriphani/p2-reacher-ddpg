@@ -29,5 +29,10 @@ Following installations are available and can be downloaded from here <br>
    -  <a href="https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Windows_x86_64.zip">Windows 64</a>
 
 ## To Train the agent
-following command to train and run the agent. <br>
-python main.py
+Run the following command to train and run the agent. <br>
+python train_agent.py
+
+## Run the agent
+To Run the use the following command <br>
+python run_agent.py
+

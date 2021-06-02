@@ -42,7 +42,7 @@ class Critic(nn.Module):
 
     def forward(self,state,action):
         """
-        Forward propogation on both two critic models
+        Forward propogation on both two critic pytorch_models
         :param state:
         :param action:
         :return:

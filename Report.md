@@ -44,6 +44,11 @@ The DDPG Agent took around 148 episodes to achieve the average score of 30.18 <b
 ![Alt text](images/ddpg_scores.png?raw=true "Agent Score")
 ![Alt text](images/learning.png?raw=true "Agent Score")
 
+### Inference
+After successfully training the agent and tested the model the agent is returning the score above 37.349
+
+
+
 #Next Steps / Improvements:
 
 - ## Implementing using TD3 Model (Twin Delay DDPG):

@@ -4,6 +4,7 @@ from reacher.noise import GuassianNoise
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+import os
 
 
 def make_plot(show=False):
@@ -57,7 +58,7 @@ def make_plot_learning(show=False):
         plt.savefig('learning.png', dpi=200)
     plt.close()
 
-def train(agent,env,n_episodes=2000,max_t=1000):
+def train(agent,env,n_episodes=2000,max_t=1000,save_models=True):
     """
 
     :param agent: The agent to train
@@ -66,26 +67,19 @@ def train(agent,env,n_episodes=2000,max_t=1000):
     :param max_t: maximum number of time steps per episode
     :return:
     """
-    # env = UnityEnvironment('../Reacher.app')
-    # agent = Agent(33,4)
     scores = list()
     scores_window = deque(maxlen=100)
     brain_name = env.brain_names[0]
     total_timesteps =0
-    expl_noise = 0.1
+
     brain = env.brains[brain_name]
-    action_size = brain.vector_action_space_size
-    gnoise = GuassianNoise(size=action_size,noise_clip=0.5,low=-1,high=1)
+
     for i_episode in range(1,n_episodes+1):
         brain_info = env.reset(train_mode=True)[brain_name]
         state = brain_info.vector_observations[0]
         score = 0
         for t in range(max_t):
             action = agent.act(state,total_timesteps)
-            # if expl_noise != 0:
-            #      noise = gnoise.sample(action,policy_noise=expl_noise)
-            #      action = (action + noise).clip(-1, 1)
-
             brain_info = env.step(action)[brain_name]
             next_state = brain_info.vector_observations[0]
             reward = brain_info.rewards[0]
@@ -105,9 +99,12 @@ def train(agent,env,n_episodes=2000,max_t=1000):
             print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'.format(i_episode,
                                                                                          np.mean(scores_window)))
             break
-    # Save models weights and scores
-    torch.save(agent.actor_target.state_dict(),'checkpoint_actor.pth')
-    torch.save(agent.critic_target.state_dict(), 'checkpoint_critic.pth')
+    # Save pytorch_models weights and scores
+    if save_models and  os.path.exists("./pytorch_models"):
+        os.makedirs("./pytorch_models")
+    file_name = "%s_%s_%s" % ("DDPG", brain_name, str(0))
+    agent.save("%s" % file_name, directory="./pytorch_models")
+
     np.savez('scores.npz',scores)
 
 def setup(env):
