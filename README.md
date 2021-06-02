@@ -17,12 +17,12 @@ Vector Action space size (per agent): 4 <br>
 
 
 
-#Installation Steps:
+# Installation Steps:
 The project is built on conda 3 and can be created by exporting the environment.yml file. By executing the following command
 
 conda env create -f environment.yml
 
-##Setup the environment:
+## Setup the environment:
 Following installations are available and can be downloaded from here <br>
    -  <a href="https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher.app.zip">Mac OSX</a>
    -  <a href="https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Linux.zip">Linux</a>
