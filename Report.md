@@ -44,6 +44,31 @@ The DDPG Agent took around 148 episodes to achieve the average score of 30.18 <b
 ![Alt text](images/ddpg_scores.png?raw=true "Agent Score")
 ![Alt text](images/learning.png?raw=true "Agent Score")
 
+#Next Steps / Improvements:
+
+- ## Implementing using TD3 Model (Twin Delay DDPG):
+TD3 is the successor to the DDPG. Up unitl recently, DDPG was one of the most used algorithms for continuous control problems.
+Although DDPG is capable of providing excellent results, it has its drawbacks. Like many RL algorithms training DDPG can be unstable and heavily reliant  on finding the hyper parameters.
+This is caused by the algorithm continuously over estimating the Q values of the critic (value) network. These estimation errors build up over time and can lead to the agent falling into a 
+local optima or experience catastrophic forgetting.
+TD3 address this issues by focusing on reducing the overestimation bias. 
+    - Using a pair of critic networks (The twin part of the title)
+    - Delayed updates of the actor (The delayed part)
+    - Action noise regularisation
+<br>
+
+Following are the Algorithm Steps:
+
+1. Initialize Network
+2. Initialize Replay Buffer
+3. Select and carry out action with exploration noise
+4. Store Transitions
+5. Update Critic
+6. Find the minimum of Critic Targets.
+7. Update Actor
+8. Update Target networks.
+9. Repeat until sentient.
+
 
 
 
