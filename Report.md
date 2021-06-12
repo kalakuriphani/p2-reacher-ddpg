@@ -23,14 +23,14 @@ Following are the hyper-parameters used to solve the problem.
 ## Neural Network Architecture
 Two neural network models with one Actor , Critic for current and Actor, Critic for target models has been implemented with the following architecture
 
-###Actor Model:
+## Actor Model:
 
   - Total Layers: 3 with final Activation function with Tanh<br>
   - First Layer with Input shape 33, output dimension 400 with Relu Activation
   - Second Layer with Input shape 400, output dimension 300 with Relu Activation
   - Third Layer with Input shape 300 and output dimension 4 with Tanh Activation
 
-###Critic Model:
+## Critic Model:
 
   - Total Layers: 3 
   - First Layer with Input shape 33, output dimension 400 with Relu Activation
@@ -49,7 +49,7 @@ After successfully training the agent and tested the model the agent is returnin
 
 
 
-#Next Steps / Improvements:
+# Next Steps / Improvements:
 
 - ## Implementing using TD3 Model (Twin Delay DDPG):
 TD3 is the successor to the DDPG. Up unitl recently, DDPG was one of the most used algorithms for continuous control problems.
